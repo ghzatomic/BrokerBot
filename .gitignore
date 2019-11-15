@@ -3,3 +3,4 @@
 .settings/**
 target/**
 ${CATALINA_HOME}/
+/target/

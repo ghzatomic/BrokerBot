@@ -135,7 +135,7 @@ public class LeitorDTO {
 	public void setVolume(Double volume) {
 		this.volume = volume;
 	}
-	public static LeitorDTO stringToLeitor(String str) throws Exception{
+	public static LeitorDTO stringToLeitor(String str){
 		if (str == null || str.isEmpty()){
 			return null;
 		}
@@ -149,7 +149,11 @@ public class LeitorDTO {
 		ret.setDiaPregao(Integer.valueOf(str.substring(8, 10)));
 		ret.setMesPregao(Integer.valueOf(str.substring(6, 8)));
 		ret.setAnoPregao(Integer.valueOf(str.substring(2, 6)));
-		ret.setDataPregao(sdf.parse(str.substring(2,10)));
+		try {
+			ret.setDataPregao(sdf.parse(str.substring(2,10)));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		ret.setCodigoNegociacao(str.substring(12,24));
 		ret.setNomeResumido(str.substring(27,39));
 		ret.setMoedaReferencia(str.substring(52,56));

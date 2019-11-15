@@ -5,58 +5,58 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
 
 import br.com.brokerbot.data.converter.LeitorDTOToDadosPregaoEntity;
 import br.com.brokerbot.data.dto.LeitorDTO;
+import br.com.brokerbot.data.entity.DadosPregaoEntity;
 import br.com.brokerbot.data.repository.DadosPregaoDAO;
 
-@RestController
-public class ImportadorDeArquivos {
+@Configuration
+public class ImportadorDeArquivos implements CommandLineRunner {
 
 	@Autowired
 	private DadosPregaoDAO dadosPregaoDAO;
-	
-	@RequestMapping( method = {RequestMethod.GET}, value = "/importaArquivos")
-	public void importaArquivos(){
-		List<String> arquivos = new ArrayList<>(Arrays.asList(
-				/*"E:/Public/Bolsa/COTAHIST_A2016/COTAHIST_A2016.txt",
-				"E:/Public/Bolsa/COTAHIST_A2015/COTAHIST_A2015.txt",
-				"E:/Public/Bolsa/COTAHIST_A2014/COTAHIST_A2014.txt",
-				"E:/Public/Bolsa/COTAHIST_A2013/COTAHIST_A2013.txt",*/
-				"E:/Public/Bolsa/COTAHIST_A2012/COTAHIST_A2012.txt"/*,
-				"E:/Public/Bolsa/COTAHIST_A2011/COTAHIST_A2011.txt"*/
+
+	public void importaArquivos() {
+		List<String> arquivos = new ArrayList<>(
+				Arrays.asList("C:/git/BrokerData/COTAHIST_A2019.txt", "C:/git/BrokerData/COTAHIST_A2018.txt"
+				/*
+				 * "C:/git/BrokerData/COTAHIST_A2014.txt",
+				 * "C:/git/BrokerData/COTAHIST_A2013.txt",
+				 * "C:/git/BrokerData/COTAHIST_A2012.txt",
+				 * "C:/git/BrokerData/COTAHIST_A2011.txt"
+				 */
 				));
 		System.out.println("Iniciando ...");
-		arquivos.forEach(string->{
-			try (Stream<String> stream = Files.lines(Paths.get(string))) {
-
-				stream.forEach(str->{
-					try {
-						LeitorDTO leitor = LeitorDTO.stringToLeitor(str);
-						if (leitor != null){
-							//System.out.println("Inserindo : "+str);
-							dadosPregaoDAO.save(LeitorDTOToDadosPregaoEntity.dtoToEntity(leitor));
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				});
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		arquivos.stream().forEach(string -> {
+				try {
+					List<DadosPregaoEntity> lista = Files.lines(Paths.get(string)).parallel().map(str -> LeitorDTOToDadosPregaoEntity.dtoToEntity(LeitorDTO.stringToLeitor(str))).filter(data -> data != null).collect(Collectors.toList());
+					System.out.println("Inserindo "+lista.size()+" dados ");
+					final AtomicInteger counter = new AtomicInteger(0);
+					lista.stream().collect(Collectors.groupingBy(it -> counter.getAndIncrement() / 5000)).values().parallelStream().forEach(pagina->{
+						System.out.println("Salvando pagina de "+pagina.size());
+						dadosPregaoDAO.save(pagina);
+					});
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		});
-		
+
 		System.out.println("Finalizado !");
 
 	}
-	
+
+	@Override
+	public void run(String... args) throws Exception {
+		importaArquivos();
+	}
+
 }
