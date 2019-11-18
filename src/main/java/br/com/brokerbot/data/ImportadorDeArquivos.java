@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -24,16 +23,14 @@ public class ImportadorDeArquivos implements CommandLineRunner {
 
 	@Autowired
 	private DadosPregaoDAO dadosPregaoDAO;
-
-	public void importaArquivos() {
-		List<String> arquivos = new ArrayList<>(
-				Arrays.asList("C:/git/BrokerData/COTAHIST_A2019.txt", "C:/git/BrokerData/COTAHIST_A2018.txt"
-				/*
-				 * "C:/git/BrokerData/COTAHIST_A2014.txt",
-				 * "C:/git/BrokerData/COTAHIST_A2013.txt",
-				 * "C:/git/BrokerData/COTAHIST_A2012.txt",
-				 * "C:/git/BrokerData/COTAHIST_A2011.txt"
-				 */
+	public void importaArquivos(){
+		List<String> arquivos = new ArrayList<>(Arrays.asList(
+				/*"E:/Public/Bolsa/COTAHIST_A2016/COTAHIST_A2016.txt",
+				"E:/Public/Bolsa/COTAHIST_A2015/COTAHIST_A2015.txt",
+				"E:/Public/Bolsa/COTAHIST_A2014/COTAHIST_A2014.txt",
+				"E:/Public/Bolsa/COTAHIST_A2013/COTAHIST_A2013.txt",*/
+				"/Dados/Documentos/COTAHIST_A2019.TXT"/*,
+				"E:/Public/Bolsa/COTAHIST_A2011/COTAHIST_A2011.txt"*/
 				));
 		System.out.println("Iniciando ...");
 		arquivos.stream().forEach(string -> {
@@ -43,7 +40,7 @@ public class ImportadorDeArquivos implements CommandLineRunner {
 					final AtomicInteger counter = new AtomicInteger(0);
 					lista.stream().collect(Collectors.groupingBy(it -> counter.getAndIncrement() / 5000)).values().parallelStream().forEach(pagina->{
 						System.out.println("Salvando pagina de "+pagina.size());
-						dadosPregaoDAO.save(pagina);
+						dadosPregaoDAO.saveAll(pagina);
 					});
 				} catch (IOException e) {
 					e.printStackTrace();
