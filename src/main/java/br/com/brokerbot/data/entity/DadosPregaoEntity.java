@@ -11,7 +11,8 @@ import javax.persistence.Id;
 public class DadosPregaoEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
 	public String tipoRegistro;

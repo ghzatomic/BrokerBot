@@ -24,17 +24,19 @@ public class ImportadorDeArquivos implements CommandLineRunner {
 	@Autowired
 	private DadosPregaoDAO dadosPregaoDAO;
 	public void importaArquivos(){
+		String caminhoPadrao = "/git/TraderData/";
 		List<String> arquivos = new ArrayList<>(Arrays.asList(
-				/*"E:/Public/Bolsa/COTAHIST_A2016/COTAHIST_A2016.txt",
-				"E:/Public/Bolsa/COTAHIST_A2015/COTAHIST_A2015.txt",
-				"E:/Public/Bolsa/COTAHIST_A2014/COTAHIST_A2014.txt",
-				"E:/Public/Bolsa/COTAHIST_A2013/COTAHIST_A2013.txt",*/
-				"/Dados/Documentos/COTAHIST_A2019.TXT"/*,
-				"E:/Public/Bolsa/COTAHIST_A2011/COTAHIST_A2011.txt"*/
+				//caminhoPadrao+"COTAHIST_A2014.txt",
+				caminhoPadrao+"COTAHIST_A2019.txt",
+				caminhoPadrao+"COTAHIST_A2018.txt",
+				caminhoPadrao+"COTAHIST_A2017.txt",
+				caminhoPadrao+"COTAHIST_A2016.TXT",
+				caminhoPadrao+"COTAHIST_A2015.TXT"
 				));
 		System.out.println("Iniciando ...");
-		arquivos.stream().forEach(string -> {
+		arquivos.parallelStream().forEach(string -> {
 				try {
+					System.out.println("Processando : "+string);
 					List<DadosPregaoEntity> lista = Files.lines(Paths.get(string)).parallel().map(str -> LeitorDTOToDadosPregaoEntity.dtoToEntity(LeitorDTO.stringToLeitor(str))).filter(data -> data != null).collect(Collectors.toList());
 					System.out.println("Inserindo "+lista.size()+" dados ");
 					final AtomicInteger counter = new AtomicInteger(0);

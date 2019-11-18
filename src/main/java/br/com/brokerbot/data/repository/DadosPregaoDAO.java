@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import br.com.brokerbot.data.entity.DadosPregaoEntity;
 
 @Transactional
-public interface DadosPregaoDAO extends CrudRepository<DadosPregaoEntity, Long> {
+public interface DadosPregaoDAO extends IBaseRepository<DadosPregaoEntity, Long> {
 
 	public List<DadosPregaoEntity> findAllByCodigoNegociacaoAndAnoPregao(String cod,Integer ano);
 	public List<DadosPregaoEntity> findAllByAnoPregaoBetweenAndMesPregaoBetween(Integer anoIni,Integer anoFim,Integer mesIni, Integer mesFim);
