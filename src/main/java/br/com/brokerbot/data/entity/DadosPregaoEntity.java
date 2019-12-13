@@ -3,7 +3,11 @@ package br.com.brokerbot.data.entity;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.Indexed;
 
+
+@CompoundIndex(def = "{'dataPregao':1, 'codigoNegociacao':1}", name = "compound_index")
 public class DadosPregaoEntity {
 
 	@Id
@@ -14,7 +18,9 @@ public class DadosPregaoEntity {
 	public Integer diaPregao;
 	public Integer mesPregao;
 	public Integer anoPregao;
+	@Indexed
 	public Date dataPregao;
+	@Indexed
 	public String codigoNegociacao;
 	public String nomeResumido;
 	public String moedaReferencia;

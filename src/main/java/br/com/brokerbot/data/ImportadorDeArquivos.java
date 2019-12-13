@@ -36,12 +36,12 @@ public class ImportadorDeArquivos implements CommandLineRunner {
 		String caminhoPadrao = "E:\\git\\cotacoes\\";
 		List<String> arquivos = new ArrayList<>(Arrays.asList(
 				//caminhoPadrao+"COTAHIST_A2014.txt"
-				/*caminhoPadrao+"COTAHIST_A2019.txt",
+				caminhoPadrao+"COTAHIST_A2019.txt",
 				caminhoPadrao+"COTAHIST_A2018.txt",
 				caminhoPadrao+"COTAHIST_A2017.txt",
 				caminhoPadrao+"COTAHIST_A2016.TXT",
 				caminhoPadrao+"COTAHIST_A2015.TXT",
-				caminhoPadrao+"COTAHIST_A2015.TXT",*/
+				caminhoPadrao+"COTAHIST_A2015.TXT",
 				caminhoPadrao+"COTAHIST_A2014.TXT",
 				caminhoPadrao+"COTAHIST_A2013.TXT",
 				caminhoPadrao+"COTAHIST_A2012.TXT",
