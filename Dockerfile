@@ -1,5 +1,6 @@
 FROM openjdk:8-jre-alpine
 VOLUME /tmp
+EXPOSE 8080
 ENV TZ=America/Sao_Paulo
 ADD ./target/BrokerBot-0.0.1-SNAPSHOT.jar /BrokerBot-0.0.1-SNAPSHOT.jar
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
