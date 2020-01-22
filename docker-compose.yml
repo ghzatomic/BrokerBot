@@ -10,6 +10,19 @@ services:
       - mongodb1:/data/db
     environment:
       - MONGODB_EXTRA_FLAGS=--wiredTigerCacheSizeGB=1
+  brokerimporter:
+    ports:
+    - "8080:8080"
+    network_mode: "host"
+    restart: always
+    image: brokerimporter:v1
+    deploy:
+      resources:
+        limits:
+          memory: 400M
+        reservations:
+          memory: 400M
+  
 volumes:
   mongodb1:
     driver: local
