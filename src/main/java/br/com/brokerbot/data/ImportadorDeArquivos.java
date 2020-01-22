@@ -27,7 +27,7 @@ import br.com.brokerbot.data.dto.LeitorDTO;
 import br.com.brokerbot.data.entity.DadosPregaoEntity;
 import br.com.brokerbot.data.repository.DadosPregaoDAO;
 
-@Configuration
+//@Configuration
 public class ImportadorDeArquivos implements CommandLineRunner {
 
 	@Autowired

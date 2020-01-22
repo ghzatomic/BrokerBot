@@ -7,5 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import br.com.brokerbot.data.entity.DadosPregaoEntity;
 
 public interface DadosPregaoDAO extends MongoRepository<DadosPregaoEntity, String> {
+	
+	Long deleteByAnoPregao(Integer ano);
 
 }
