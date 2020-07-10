@@ -1,25 +1,34 @@
 version: '3.3'
 services:
-  mongo:
-    image: mongo
-    restart: always
-    container_name: mongo
-    ports:
-       - "27017:27017"
-    volumes:
-       - mongodb1:/data/db
-    environment:
-       - MONGODB_EXTRA_FLAGS=--wiredTigerCacheSizeGB=1
+#  mongobot:
+#    image: mongo
+#    restart: always
+#    container_name: mongobot
+#    ports:
+#       - "27017:27017"
+#    volumes:
+#       - mongodb1:/data/db
+#    environment:
+#       - MONGODB_EXTRA_FLAGS=--wiredTigerCacheSizeGB=1
+#    networks:
+#      - brokerbot
   brokerimporter:
     build: .
     ports:
       - "8080:8080"
     restart: always
     container_name: brokerimporter
+    network_mode: "host"
     environment:
-       - MONGO_IP=database
-    links:
-       - "mongo:database"
+       - MONGO_IP=127.0.0.1
+#    links:
+#       - "mongobot:database"
+#    networks:
+#      - brokerbot
+#networks:
+#    default: # this network (app1)
+#        driver: bridge
+#    brokerbot: # external network (app2)
 volumes:
   mongodb1:
     driver: local
