@@ -4,3 +4,4 @@
 target/**
 ${CATALINA_HOME}/
 /target/
+!target/BrokerBot-0.0.1-SNAPSHOT.jar 
